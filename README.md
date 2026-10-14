@@ -4,6 +4,10 @@
 
 **在线预览：** https://melovae.github.io/wecom-service-agent-demo-shell/
 
+> **组内确认请先读：[约定说明（相对先前发版的更新）](./约定说明.md)**  
+> 完整规则在工作仓 `docs/superpowers/plans/2026-10-14-sidebar-display-rules-v1.md`（v1.3）。
+
+
 **当前夹具：** `sidebar-shell-v1.8`（9 个演示会话）
 
 ## 说明（给组内确认）
