@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>财富服务智能体 · 侧栏壳静态演示</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="toolbar">
+      <div><b>财富顾问工作台</b> · 侧栏壳静态演示</div>
+      <span>Mock only · 无真实账户 / 无模型调用 / 无真实发送</span>
+    </div>
+
+    <div class="window">
+      <div class="titlebar">
+        <b>企业微信</b>
+        <span>客户会话</span>
+        <div class="controls"><i>─</i><i>□</i><i>×</i></div>
+      </div>
+
+      <div class="layout">
+        <aside class="native-rail" aria-hidden="true">
+          <div class="av">顾</div>
+          <div class="sec">💬</div>
+          <div class="deco"><span>○</span><span>□</span><span>△</span></div>
+          <div class="bot">☰</div>
+        </aside>
+
+        <aside class="convs" aria-label="客户会话">
+          <div class="head"><span>企业微信</span><span>客户会话</span></div>
+          <div class="search">搜索客户或问题</div>
+          <div class="conv-list" id="conv-list"></div>
+          <div class="conv-foot">3 个演示会话 · 静态 Mock<br>主例：业绩报酬赎回</div>
+        </aside>
+
+        <main class="chat" aria-label="对话框">
+          <div class="chat-h">
+            <b id="chat-name">客户</b>
+            <span class="tag">@微信</span>
+            <span class="more">···</span>
+          </div>
+          <div class="chat-body">
+            <div class="day" id="chat-day">2026</div>
+            <div class="msg">
+              <div class="av" id="msg-av">客</div>
+              <div>
+                <div class="when" id="msg-when"></div>
+                <div class="bubble" id="msg-text"></div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-foot">
+            <div class="chat-tools">☺ ✂ ▧ ▱</div>
+            <textarea id="draft" placeholder="使用右侧话术，也可以在这里修改"></textarea>
+            <div class="chat-actions">
+              <span class="hint">右侧「使用话术」仅填入此处；发送由顾问确认</span>
+              <button type="button" id="send-btn" disabled>发送</button>
+            </div>
+          </div>
+        </main>
+
+        <aside class="assistant" aria-label="服务助手">
+          <div class="assistant-h">
+            <div class="name">
+              <div class="emblem">✦</div>
+              <div>
+                <b>服务助手</b>
+                <small id="assistant-sub">当前会话</small>
+              </div>
+            </div>
+          </div>
+          <div class="assistant-body" id="sidebar"></div>
+          <div class="dock">
+            <div class="tip">话术放入输入框，由顾问确认发送</div>
+            <button type="button" id="use-btn">使用话术</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
