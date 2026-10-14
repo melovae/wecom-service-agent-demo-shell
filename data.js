@@ -1,6 +1,6 @@
 /** 静态演示夹具 · Mock only。话术只答客户所问，不塞未问边界句。 */
 window.SIDEBAR_SHELL_DEMO = {
-  version: "sidebar-shell-v1.1",
+  version: "sidebar-shell-v1.2",
   cases: [
     {
       id: "confirmation",
@@ -19,12 +19,9 @@ window.SIDEBAR_SHELL_DEMO = {
         primaryAction: "使用话术",
         actionEnabled: true,
         verdict: "已确认成功 · 景明A · 150万元",
-        contrasts: [
-          "确认成功 ≠ 资金到账",
-          "申请额 150万元 = 确认额 150万元 · 确认日 2026-01-21"
-        ],
         facts: [
           { label: "确认状态", value: "确认成功" },
+          { label: "申请金额", value: "150万元" },
           { label: "确认金额", value: "150万元" },
           { label: "确认日", value: "2026-01-21" }
         ],
@@ -53,7 +50,8 @@ window.SIDEBAR_SHELL_DEMO = {
         primaryAction: "使用话术",
         actionEnabled: true,
         verdict: "尚未选定是哪一笔 · 只能先发补问",
-        contrasts: ["未确认 ≠ 可撤", "可查当前可撤 ≠ 已办理撤单"],
+        /* 本题真易混：未确认不能推出可撤；候选行已展示可否撤 */
+        contrasts: ["未确认 ≠ 可撤"],
         candidates: [
           {
             name: "广发景明中短债A",
@@ -129,8 +127,8 @@ window.SIDEBAR_SHELL_DEMO = {
         statusTone: "ask",
         primaryAction: "使用话术",
         actionEnabled: true,
+        /* 结论 + 条件表已够；不再重复黄底「凑够≠能买」 */
         verdict: "不能回答「今天一定能买」· 规则可先说",
-        contrasts: ["凑够门槛 ≠ 今天一定能提交成功"],
         checklist: [
           { label: "开放期 6/29–7/3", status: "ok" },
           { label: "首次门槛 30万元", status: "ok" },
@@ -239,14 +237,12 @@ window.SIDEBAR_SHELL_DEMO = {
         ],
         ruleLine:
           "满30天计费；年化4%内免提；4%–8%提20%；超过8%提30%（本组Mock，非全产品统一）。",
-        contrasts: [
-          "现金分红扣费 ≠ 份额减少",
-          "登记日全部权益参与计费"
-        ],
+        /* 客户双问份额未变：保留真对照；计费说明放原因句，不作伪对照 */
+        contrasts: ["现金分红扣费 ≠ 份额减少"],
         reasonSections: [
           {
             title: "份额为什么没变",
-            summary: "现金分红从分红款扣费，不减持仓份额。"
+            summary: "现金分红从分红款扣费，不减持仓份额；登记日全部权益参与计费。"
           },
           {
             title: "为什么还扣费",
@@ -358,7 +354,7 @@ window.SIDEBAR_SHELL_DEMO = {
         ],
         checks: ["客户需求", "适当性边界", "触达频控"],
         reply:
-          "苍穹创裕3号资料里，门槛、开放和业绩报酬要点见侧栏。您更关注持有期限，还是资金使用安排？",
+          "苍穹创裕3号资料我整理好了：代码276209，发售窗6月4日–16日，首次门槛40万。您更关注持有期限，还是资金使用安排？",
         nextStepText: "确认服务条件后再判断是否合适发送。",
         process: [
           { kind: "机会", title: "资料摘要", text: "Mock 产品字段；不替代适当性判断。" }
