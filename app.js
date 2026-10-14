@@ -55,7 +55,12 @@
           .join("")}</div>`
       );
       const nature = p.metrics.find((m) => m.nature)?.nature;
-      if (nature) parts.push(`<span class="nature">${esc(nature)}</span>`);
+      if (nature) {
+        const est = /预估|尚未/.test(nature);
+        parts.push(
+          `<span class="nature${est ? " is-estimate" : ""}">${esc(nature)}</span>`
+        );
+      }
     }
     if (p.ruleLine) parts.push(`<p class="rule">规则：${esc(p.ruleLine)}</p>`);
     if (p.contrasts?.length) {
@@ -88,6 +93,38 @@
               `<div class="row"><dt>${esc(g.label)}</dt><dd>${esc(g.value)}</dd></div>`
           )
           .join("")}</dl>`
+      );
+    }
+    if (p.checklist?.length) {
+      parts.push(
+        `<ul class="checklist"><p class="cand-label">条件核对</p>${p.checklist
+          .map((row) => {
+            const ok = row.status === "ok";
+            return `<li class="${ok ? "is-ok" : "is-gap"}"><span>${esc(
+              row.label
+            )}</span><b>${ok ? "已核" : "未核"}</b></li>`;
+          })
+          .join("")}</ul>`
+      );
+    }
+    if (p.cardFields?.length) {
+      parts.push(
+        `<dl class="facts card"><p class="cand-label">资料摘要</p>${p.cardFields
+          .map(
+            (f) =>
+              `<div class="row"><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`
+          )
+          .join("")}</dl>`
+      );
+    }
+    if (p.checks?.length) {
+      parts.push(
+        `<ul class="checklist"><p class="cand-label">发出前我要核</p>${p.checks
+          .map(
+            (c) =>
+              `<li class="is-gap"><span>${esc(c)}</span><b>未核</b></li>`
+          )
+          .join("")}</ul>`
       );
     }
     if (p.attribution?.length) {
