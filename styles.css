@@ -183,6 +183,16 @@ html, body { height: 100%; margin: 0; font-family: var(--font); color: var(--ink
   display: inline-block; font-size: 11px; color: var(--ok); background: #d1e7dd;
   border-radius: 4px; padding: 1px 6px; margin-bottom: 8px;
 }
+.nature.is-estimate { color: var(--ask); background: #fff6e6; }
+.checklist { list-style: none; margin: 0 0 10px; padding: 0; }
+.checklist li {
+  display: flex; justify-content: space-between; gap: 8px; align-items: center;
+  font-size: 12.5px; padding: 6px 8px; margin-bottom: 4px;
+  border: 1px solid var(--line); border-radius: 6px; background: #fff;
+}
+.checklist li.is-ok b { color: var(--ok); font-size: 12px; }
+.checklist li.is-gap b { color: #cf1322; font-size: 12px; }
+.facts.card .row { grid-template-columns: 96px 1fr; }
 .rule { font-size: 12px; color: var(--muted); line-height: 1.55; margin: 0 0 10px; }
 
 .contrasts { list-style: none; margin: 0 0 10px; padding: 0; }
