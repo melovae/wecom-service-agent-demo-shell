@@ -40,9 +40,7 @@
 
     if (p.heard?.length) {
       parts.push(
-        `<p class="heard">客户问了 ${p.heard.length} 点：${p.heard
-          .map((q, i) => `<b>${i + 1}．${esc(q)}</b>`)
-          .join(" ")}</p>`
+        `<p class="heard">客户在问：${p.heard.map((q) => `<b>${esc(q)}</b>`).join("；")}</p>`
       );
     }
     if (p.verdict) {
@@ -62,25 +60,30 @@
         );
       }
     }
-    if (p.ruleLine) parts.push(`<p class="rule">规则：${esc(p.ruleLine)}</p>`);
-    if (p.contrasts?.length) {
+    /* 顺序：定位 → 候选 → 缺口／条件 → 发出前核 → 资料 → 对照 → 归因／原因 → 规则 → 表 */
+    if (p.facts?.length) {
       parts.push(
-        `<ul class="contrasts">${p.contrasts
-          .map((c) => `<li>不能混为一谈 · ${esc(c)}</li>`)
-          .join("")}</ul>`
+        `<dl class="facts"><p class="cand-label">已定位</p>${p.facts
+          .map(
+            (f) =>
+              `<div class="row"><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`
+          )
+          .join("")}</dl>`
       );
     }
     if (p.candidates?.length) {
-      parts.push(`<p class="cand-label">还没选定哪一笔 · 当前可撤</p>`);
+      parts.push(`<p class="cand-label">还没选定哪一笔 · 可否撤销不同</p>`);
       parts.push(
         p.candidates
           .map((c) => {
             const flag = c.cancelable
               ? `<span class="flag-ok">可撤销</span>`
               : `<span class="flag-no">不可撤销</span>`;
-            return `<div class="cand"><div><b>${esc(c.name)}</b><small>${esc(c.code)} · ${esc(
-              c.amount
-            )} · ${esc(c.confirm)}</small></div>${flag}</div>`;
+            const head = c.applyNo ? esc(c.applyNo) : esc(c.name);
+            const sub = c.applyNo
+              ? `${esc(c.name)} · ${esc(c.code)} · ${esc(c.amount)} · ${esc(c.confirm)}`
+              : `${esc(c.code)} · ${esc(c.amount)} · ${esc(c.confirm)}`;
+            return `<div class="cand"><div><b>${head}</b><small>${sub}</small></div>${flag}</div>`;
           })
           .join("")
       );
@@ -107,6 +110,23 @@
           .join("")}</ul>`
       );
     }
+    if (p.timeline?.length) {
+      parts.push(
+        `<p class="cand-label">关键日期</p><p class="rule">${p.timeline
+          .map((t) => esc(t))
+          .join(" · ")}</p>`
+      );
+    }
+    if (p.checks?.length) {
+      parts.push(
+        `<ul class="checklist"><p class="cand-label">发出前我要核</p>${p.checks
+          .map(
+            (c) =>
+              `<li class="is-gap"><span>${esc(c)}</span><b>未核</b></li>`
+          )
+          .join("")}</ul>`
+      );
+    }
     if (p.cardFields?.length) {
       parts.push(
         `<dl class="facts card"><p class="cand-label">资料摘要</p>${p.cardFields
@@ -117,13 +137,10 @@
           .join("")}</dl>`
       );
     }
-    if (p.checks?.length) {
+    if (p.contrasts?.length) {
       parts.push(
-        `<ul class="checklist"><p class="cand-label">发出前我要核</p>${p.checks
-          .map(
-            (c) =>
-              `<li class="is-gap"><span>${esc(c)}</span><b>未核</b></li>`
-          )
+        `<ul class="contrasts">${p.contrasts
+          .map((c) => `<li>不能混为一谈 · ${esc(c)}</li>`)
           .join("")}</ul>`
       );
     }
@@ -141,16 +158,7 @@
           .join("")
       );
     }
-    if (p.facts?.length) {
-      parts.push(
-        `<dl class="facts">${p.facts
-          .map(
-            (f) =>
-              `<div class="row"><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`
-          )
-          .join("")}</dl>`
-      );
-    }
+    if (p.ruleLine) parts.push(`<p class="rule">规则：${esc(p.ruleLine)}</p>`);
     if (p.tables && Object.keys(p.tables).length) {
       const inner = Object.values(p.tables).map(tableHtml).join("");
       parts.push(
@@ -230,8 +238,11 @@
     renderConvs();
     els.chatName.textContent = item.customer;
     els.chatDay.textContent = `2026-${item.date.replace("/", "-")}`;
-    els.msgAv.textContent = item.initials;
-    els.msgWhen.textContent = `${item.customer} · ${item.time}`;
+    const isNote = item.messageRole === "note";
+    els.msgAv.textContent = isNote ? "顾" : item.initials;
+    els.msgWhen.textContent = isNote
+      ? `顾问备忘 · ${item.time}`
+      : `${item.customer} · ${item.time}`;
     els.msgText.textContent = item.message;
     els.assistantSub.textContent = `${item.customer} · 静态演示`;
     els.draft.value = "";
